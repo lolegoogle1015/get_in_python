@@ -12,16 +12,10 @@ c = int(sys.argv[3])
 
 #a * x^2 + b * x + c = 0
 
-D = pow(b, 2) - (4*a*c)
+D = b * b - 4 * a * c
 
-if D > 0:
-    xa = (-b + sqrt(D))/(2*a)
-    xb = (-b - sqrt(D))/(2*a)
-    print(xa)
-    print(xb)
-elif D == 0:
-    xa = xb = -(b/(2*a))
-    print(xa)
-    print(xb)
-else:
-    print("There are no roots")
+x1 = (-b + sqrt(D)) / (2 * a)
+x2 = (-b - sqrt(D)) / (2 * a)
+
+print(int(x1))
+print(int(x2))
