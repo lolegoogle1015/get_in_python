@@ -3,38 +3,45 @@ import tempfile
 import argparse
 import json
 
+def parse():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-k', '--key', help='Key')
+    parser.add_argument('-v', '--value', help='Help')
+    return parser.parse_args()
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-k", "--key",  action="store")
-parser.add_argument("-v", "--value", action="store", nargs='*')
-args = parser.parse_args()
-data = dict()
-storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
+def read_data(storage_path):
+    if not.path.exists(storage_path):
+        return {}
+    with open(storage_path, 'r') as f:
+        data = file.read()
+        if data:
+            return json.loads(data)
+        return {}
 
+def write_data(storage_path, data):
+    with open(storage_path, 'w') as f:
+        f.write(json.dumps(data))
 
-if (args.key and not args.value) and os.stat(storage_path).st_size == 0:
-    print("The file is empty !")
-else:
-    if args.key and args.value:
-        if os.path.exists(storage_path):
-            with open(storage_path, 'r') as f:
-                data = json.load(f)
-        with open(storage_path, 'w') as f:
-            if args.key in data:
-                data[args.key].extend(args.value)
-            else:
-                data[args.key] = []
-                data[args.key].extend(args.value)
+def put(storage_path, key, value):
+    data = read_data(storage_path)
+    data[key] = data.get(key, list())
+    data[key].append(value)
+    write_data(storage_path, data)
 
-            json.dump(data, f, indent=2)
+def get(storage_path, key):
+    data = read_data(storage_path)
+    return data.get(key, [])
 
-    elif args.key and  not args.value:
-        with open(storage_path, 'r') as f:
-            data = json.load(f)
-            if args.key in data:
-                print(', '.join(data[args.key]))
-            else:
-                print(None)
+def main(storage_path):
+    args = parse()
 
+    if args.key and args.val:
+        put(storage_path, args.key, args.val)
+    elif args.key:
+        print(*get(storage_path, args.key), sep=', ')
     else:
-        print("You should pass some arguments")
+        print('The program is called with invalid parameters.')
+
+if __name__ == '__main__':
+    storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
+    main(storage_path)
