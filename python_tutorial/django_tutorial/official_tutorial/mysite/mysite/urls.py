@@ -12,10 +12,17 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+Моє пояснення:
+    1.mysite.urls - загальна table для розширення варіацій доріг сайту
+    2.Ми прописуємо шляхи в словник urlpatterns, за допомогою функції path
+    3. path("маршрут до сторінки після кореня сайту", "вигляд сторінки"\
+                                          (зазвичай використовують функцію include()))\
+    4. Метод include() використовуємо ЗАВЖДИ. Єдиний вийняток - адмін сторінка
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
+    path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
 ]
